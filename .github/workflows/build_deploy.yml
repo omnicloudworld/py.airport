@@ -1,11 +1,14 @@
 name: Build & Deploy Package
 
+
 on:
   push:
     branches:
       - main
 
+
 jobs:
+
 
   check-for-changes-on-push:
     if: github.event_name == 'push'
@@ -25,11 +28,17 @@ jobs:
         changed=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'pyproject.toml' | wc -l)
         echo "name=file_changed::$changed" >> $GITHUB_ENV
 
+
   check-for-changes-on-dispatch:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       file_changed: 'true'
+
+    steps:
+    - name: Set file_changed to true
+      run: echo "Manual trigger, setting file_changed to true"
+
 
   build-and-deploy:
     needs: [check-for-changes-on-push, check-for-changes-on-dispatch]
