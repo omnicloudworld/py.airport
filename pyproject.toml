@@ -1,4 +1,5 @@
 [tool.poetry]
+
 name = "omnicloud-airport"
 version = "0.0.0-dev01"
 description = ""
@@ -19,6 +20,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 
+
 [tool.poetry.dependencies]
 python = "^3.10"
 
@@ -28,6 +30,7 @@ duty = "^0.9.0"
 ipykernel = "^6.22.0"
 pylint = "^2.17.0"
 flake8 = "^6.0.0"
+
 
 [build-system]
 requires = ["poetry-core"]
