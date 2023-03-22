@@ -20,7 +20,7 @@ jobs:
       id: check_files
       run: |
         changed=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'pyproject.toml' | wc -l)
-        echo "::set-output name=file_changed::$changed"
+        echo "name=file_changed::$changed" >> $GITHUB_ENV
 
 
   build-and-deploy:
