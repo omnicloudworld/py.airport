@@ -44,6 +44,7 @@
         "metatag",
         "metatags",
         "mkdocstrings",
+        "multicloud",
         "multipage",
         "omnicloud",
         "Plotly",
@@ -52,6 +53,7 @@
         "setuptools",
         "skipkeys",
         "SPACELAB",
+        "supercloud",
         "wght",
         "wsgi"
     ],
