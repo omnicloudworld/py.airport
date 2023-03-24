@@ -31,10 +31,10 @@ jobs:
 
     - name: Prepare Poetry
       run: |
+        curl -sSL https://install.python-poetry.org | python3 -
         echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
         echo "POETRY_VIRTUALENVS_CREATE=false" >> $GITHUB_ENV
-        pip3 install --upgrade pip
-        pipx install poetry
+        poetry install
 
     - name: Deploy & Publish
       run: poetry publish --skip-existing --build -u __token__ -p ${{ secrets.PYPI_TOKEN }}

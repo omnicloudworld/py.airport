@@ -11,7 +11,6 @@ packages = [{include = "omnicloud"}]
 homepage = "https://omnicloud.world/airport"
 repository = "https://github.com/omnicloudworld/py.airport"
 documentation = "docs.omnicloud.world/py-airport"
-donation = "https://omnicloud.world/donate"
 
 classifiers = [
     "Programming Language :: Python :: 3.10",
