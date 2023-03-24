@@ -8,7 +8,7 @@ authors = ["Iurii Tarasenko <iurii@omnicloud.world>"]
 readme = "README.md"
 packages = [{include = "omnicloud"}]
 
-homepage = "https://omnicloud.world"
+homepage = "https://omnicloud.world/airport"
 repository = "https://github.com/omnicloud/airport.py"
 documentation = "https://docs.omnicloud.world/airport.py"
 

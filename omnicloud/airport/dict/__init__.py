@@ -1,8 +1,8 @@
 
-from ..tools import _recursive_import
-from ._terminal import _TerminalDict
-
 from os import path as _path
+
+from .._tools.pkg import _recursive_import
+from ._terminal import _TerminalDict
 
 '''
 Import all submodules of current package. This is done to make sure that

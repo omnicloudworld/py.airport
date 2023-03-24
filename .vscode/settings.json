@@ -35,6 +35,7 @@
         "crossorigin",
         "hypercorn",
         "inlinehilite",
+        "ipykernel",
         "isabstractmethod",
         "jupyterlab",
         "layouter",
@@ -46,8 +47,10 @@
         "multipage",
         "omnicloud",
         "Plotly",
+        "pylint",
         "qualname",
         "setuptools",
+        "skipkeys",
         "SPACELAB",
         "wght",
         "wsgi"

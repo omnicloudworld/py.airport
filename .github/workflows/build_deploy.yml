@@ -2,47 +2,23 @@ name: Build & Deploy Package
 
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+    paths:
+      - 'pyproject,toml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'pyproject.toml'
 
 
 jobs:
 
-
-  check-for-changes-on-push:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    outputs:
-      file_changed: ${{ steps.check_files.outputs.file_changed }}
-      
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Check for file changes
-      id: check_files
-      run: |
-        changed=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep 'pyproject.toml' | wc -l)
-        echo "name=file_changed::$changed" >> $GITHUB_ENV
-
-
-  check-for-changes-on-dispatch:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    outputs:
-      file_changed: 'true'
-
-    steps:
-    - name: Set file_changed to true
-      run: echo "Manual trigger, setting file_changed to true"
-
-
   build-and-deploy:
-    needs: [check-for-changes-on-push, check-for-changes-on-dispatch]
-    if: (github.event_name == 'push' && needs.check-for-changes-on-push.outputs.file_changed == '1') || (github.event_name == 'workflow_dispatch')
+
     runs-on: ubuntu-latest
 
     steps:
@@ -54,30 +30,15 @@ jobs:
       with:
         python-version: 3.10
 
-    - name: Install Poetry
+    - name: Prepare Poetry
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
-
-    - name: Configure Poetry
-      run: |
         echo "PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
         echo "POETRY_VIRTUALENVS_CREATE=false" >> $GITHUB_ENV
+        poetry install
 
-    - name: Cache dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.cache/pypoetry
-        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
-        restore-keys: ${{ runner.os }}-poetry-
-
-    - name: Install dependencies
-      run: poetry install
-
-    - name: Build package
-      run: poetry build
-
-    - name: Publish package
-      run: poetry publish
+    - name: Deploy & Publish
+      run: poetry publish --skip-existing --build 
       env:
-        PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        PYPI_USERNAME: __token__
+        PYPI_PASSWORD: ${{ secrets.PYPI_TOKEN }}
