@@ -76,4 +76,4 @@ pypi/conf.json
 .venv/*/
 
 gcp.json
-poerty.lock
+poetry.lock
