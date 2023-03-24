@@ -1,22 +1,24 @@
 [tool.poetry]
 
 name = "omnicloud-airport"
-version = "0.0.0-dev01"
-description = ""
+version = "0.0.0-dev02"
+description = "platform for interacting with omnicloud"
 keywords = ["omnicloud", "supercloud", "multicloud", "cloud computing", "migration"]
 authors = ["Iurii Tarasenko <iurii@omnicloud.world>"]
 readme = "README.md"
 packages = [{include = "omnicloud"}]
 
 homepage = "https://omnicloud.world/airport"
-repository = "https://github.com/omnicloud/airport.py"
-documentation = "https://docs.omnicloud.world/airport.py"
+repository = "https://github.com/omnicloudworld/py.airport"
+documentation = "docs.omnicloud.world/py-airport"
+donation = "https://omnicloud.world/donate"
 
 classifiers = [
     "Programming Language :: Python :: 3.10",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License"
 ]
 
 
