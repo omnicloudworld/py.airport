@@ -23,6 +23,6 @@ jobs:
 
     steps:
     - name: omnicloud ci step
-      uses: omnicloudworld/ci/python/poetry2pypi@r/v0.0.2
+      uses: omnicloudworld/ci/python/poetry2pypi@r/0.0.2
       with:
         pypi-token: ${{ secrets.PYPI_TOKEN }}
