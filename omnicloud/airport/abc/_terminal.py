@@ -7,14 +7,9 @@ from base64 import b64decode as b64d
 from os import environ as env
 from os import path
 from typing import Any
+from ..tools.pkg import abstract_checker
 
-
-def abstract_checker(cls, attr_name: str) -> None:
-    attr = getattr(cls, attr_name)
-    if hasattr(attr, '__isabstractmethod__') and attr.__isabstractmethod__:
-        raise NotImplementedError(
-            f'The attribute "{cls.__name__}.{attr_name}" is required. Please read documentation of ZZZ!!'
-        )
+__all__ = ['Gate', 'Building']
 
 
 class Gate(ABC, metaclass=ABCMeta):
@@ -98,7 +93,7 @@ class Building(ABC):
             options = {}
             for key_value in param3.split("||"):
                 key, value = key_value.split("=", 1)
-                options[key] = value      
+                options[key] = value
 
             # Replace from environment variables
             for key, value in options.items():
