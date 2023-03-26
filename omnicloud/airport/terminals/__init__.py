@@ -1,9 +1,8 @@
-from ._dict.terminal import _TerminalDict
-
-__all__ = [
-    'Dict'
-]
+from ..abc import Building as _Building
+from ..tools.pkg import import_subpackages_attributes as _import_terminals
 
 
-class Dict(_TerminalDict):
-    pass
+# Import all terminals with aliases without the _Terminal prefix
+for _terminal_name, _terminal_obj in _import_terminals(__name__, _Building, '_Terminal'):
+
+    globals()[_terminal_name] = _terminal_obj

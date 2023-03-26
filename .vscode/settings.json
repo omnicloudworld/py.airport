@@ -53,6 +53,7 @@
         "setuptools",
         "skipkeys",
         "SPACELAB",
+        "subpackages",
         "supercloud",
         "wght",
         "wsgi"

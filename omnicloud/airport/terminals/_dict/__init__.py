@@ -1,9 +1,13 @@
 
-from os import path as path
+from ...abc import Gate as _Gate
+from ...tools.pkg import import_subpackages_attributes as _import_gates
+from .gcs import GStorageJSON
+from .local import LocalJSON
 
-from ...tools.pkg import recursive_import
+from .terminal import _TerminalDict
 
-# Import all submodules of current package. This is done to make sure that
-# all third-party Gates are imported and registered.
-package_path = path.dirname(path.abspath(__file__))
-recursive_import(__name__, package_path)
+
+# Import all terminals with aliases without the _Terminal prefix
+for _gate_name, _gate_obj in _import_gates(__name__, _Gate, '_Gate'):
+
+    globals()[_gate_name] = _gate_obj

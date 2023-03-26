@@ -8,6 +8,7 @@ from os import environ as env
 from os import path
 from typing import Any
 from ..tools.pkg import abstract_checker
+from warnings import warn
 
 __all__ = ['Gate', 'Building']
 
@@ -117,9 +118,8 @@ class Building(ABC):
                             options[key] = json.loads(decoded_value)
                         else:
                             options[key] = decoded_value
-                    except (ValueError, TypeError):
-                        # If decoding or conversion fails, leave the value as-is
-                        pass
+                    except (ValueError, TypeError) as ex:
+                        warn(f"Failed to decode base64-encoded value: {value} ({ex})")
 
         # Return the extracted values
         return gate, path.join(place, name), options

@@ -6,6 +6,7 @@ Cloud Storage in JSON format.
 
 import json
 from io import BytesIO
+from tempfile import NamedTemporaryFile
 
 from google.cloud import storage
 
@@ -48,7 +49,13 @@ def get_gcs_client(options: dict) -> storage.Client:
         A storage.Client object.
     """
     if 'key_file' in options:
-        return storage.Client.from_service_account_json(options['key_file'])
+        with NamedTemporaryFile(mode="w", delete=False) as temp_file:
+            temp_file.write(json.dumps(options['key_file']))
+            # json.dump(options['key_file'], temp_file)
+            key_file = temp_file.name
+        client = storage.Client.from_service_account_json(key_file)
+        return client
+
     else:
         return storage.Client()
 
@@ -116,7 +123,7 @@ class GStorageJSON(_TerminalDict.Gate):
         """
         # Parse JSON options
         json_params = [
-            'object_name', 'content_type', 'key_file'
+            'content_type', 'key_file'
         ]
         json_options = {}
         for k in json_params:
@@ -132,6 +139,5 @@ class GStorageJSON(_TerminalDict.Gate):
         json_data = json.dumps(parcel)
 
         # Upload JSON data to Google Cloud Storage
-        bucket = client.bucket(bucket_name)
-        blob = bucket.blob(json_options.get('object_name', object_name))
+        blob = client.bucket(bucket_name).blob(object_name)
         blob.upload_from_string(json_data, content_type=json_options.get('content_type', 'application/json'))
