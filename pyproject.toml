@@ -23,6 +23,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
+google-cloud-storage = "^2.7.0"
 
 
 [tool.poetry.group.dev.dependencies]
