@@ -11,7 +11,7 @@ __all__ = [
 ]
 
 
-def import_all_modules(package_name: str, package_path: str, inherited: type, prefix: str):
+def import_all_modules(package_name: str, package_path: str):
 
     for module_info in _pkgutil.iter_modules([package_path]):
 
