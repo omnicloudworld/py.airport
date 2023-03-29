@@ -1,7 +1,6 @@
 
 from ...abc import Gate as _Gate
 from ...tools.pkg import import_subpackages_attributes as _import_gates
-from .gcs import GStorageJSON
 from .local import LocalJSON
 
 from .terminal import _TerminalDict
