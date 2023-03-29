@@ -1,13 +1,24 @@
+name: Build & Deploy
+
+
 on:
+  push:
+    branches: [main]
+    paths: ['pyproject.toml']
   pull_request:
-    types:
-      - closed
+    branches: [main]
+    paths: ['pyproject.toml']
+    types: [closed]
 
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged == true
+
+  build-and-deploy:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
     steps:
-    - run: |
-        echo The PR was merged
-      
+
+    - name: omnicloud ci step
+      uses: omnicloudworld/ci/python/poetry2pypi@v0.0.2
+      with:
+        pypi-token: ${{ secrets.PYPI_TOKEN }}
