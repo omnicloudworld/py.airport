@@ -24,8 +24,6 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.10"
 google-cloud-storage = "^2.7.0"
-mkdocs-include-markdown-plugin = "3.9.1"
-mkdocs-same-dir = "^0.1.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -33,14 +31,19 @@ duty = "^0.9.0"
 ipykernel = "^6.22.0"
 pylint = "^2.17.0"
 flake8 = "^6.0.0"
-mkdocs-material = "^9.1.4"
+pyyaml = "^6.0"
+pyyaml-env-tag = "^0.1"
+omnicloud-tools = "^0.0.1rc1"
+
+
+[tool.poetry.group.mkdocs.dependencies]
 mkdocs = "^1.4.2"
+mkdocs-material = "^9.1.4"
 mkdocstrings = {extras = ["python"], version = "^0.20.0"}
 mkdocs-section-index = "^0.3.5"
 mkdocs-glightbox = "^0.3.2"
 mkdocs-same-dir = "^0.1.2"
-pyyaml = "^6.0"
-pyyaml-env-tag = "^0.1"
+mkdocs-include-markdown-plugin = "3.9.1"
 
 
 [build-system]
