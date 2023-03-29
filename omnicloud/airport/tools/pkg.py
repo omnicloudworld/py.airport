@@ -1,6 +1,7 @@
 import importlib as _importlib
 import pkgutil as _pkgutil
 from os import path as _path
+from os import environ as _env
 from warnings import warn as _warn
 
 
@@ -46,31 +47,37 @@ def import_subpackages_attributes(package_name: str, inherited: type, prefix: st
     terminals = []
     names_list = []
 
-    for _, name, is_pkg in _pkgutil.walk_packages(package.__path__, f"{package_name}."):
+    def looking_for_subpackages(package_path, package_name):
 
-        if is_pkg and name.startswith(f"{package_name}._"):
-            pkg = _importlib.import_module(name)
+        for _, name, is_pkg in _pkgutil.walk_packages(package_path, f"{package_name}."):
 
-            terminal_names = [
-                attr_name[len(f'{prefix}'):]
-                for attr_name in dir(pkg)
-                if attr_name.startswith(f'{prefix}')
-            ]
+            if is_pkg and name.startswith(f"{package_name}._"):
+                pkg = _importlib.import_module(name)
 
-            if len(terminal_names) != 1:
-                _warn(f"Expected 1 {prefix}* attribute in {name}, found {len(terminal_names)}")
-                continue
+                terminal_names = [
+                    attr_name[len(f'{prefix}'):]
+                    for attr_name in dir(pkg)
+                    if attr_name.startswith(f'{prefix}')
+                ]
 
-            terminal_name = terminal_names[0]
-            terminal = getattr(pkg, f'{prefix}{terminal_name}')
+                if len(terminal_names) != 1:
+                    _warn(f"Expected 1 {prefix}* attribute in {name}, found {len(terminal_names)}")
+                    continue
 
-            if not issubclass(terminal, inherited):
-                raise TypeError(f"Expected {inherited.__name__} subclass in {name}.")
+                terminal_name = terminal_names[0]
+                terminal = getattr(pkg, f'{prefix}{terminal_name}')
 
-            terminals.append((terminal_name, terminal))
-            names_list.append(terminal_name)
+                if not issubclass(terminal, inherited):
+                    raise TypeError(f"Expected {inherited.__name__} subclass in {name}.")
 
-            if len(terminals) > len(set(names_list)):
-                raise RuntimeError(f"Duplicate terminal name {terminal_name} in {name}")
+                terminals.append((terminal_name, terminal))
+                names_list.append(terminal_name)
+
+                if len(terminals) > len(set(names_list)):
+                    raise RuntimeError(f"Duplicate terminal name {terminal_name} in {name}")
+
+    looking_for_subpackages(package.__path__, package_name)
+    if 'OMNICLOUD_AIRPORT_DEVPATH' in _env and _env['OMNICLOUD_AIRPORT_DEVPATH'] != '':
+        looking_for_subpackages([_env['OMNICLOUD_AIRPORT_DEVPATH']], package_name)
 
     return terminals
