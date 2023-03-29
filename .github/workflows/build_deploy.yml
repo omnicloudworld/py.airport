@@ -3,19 +3,21 @@ name: Build & Deploy
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'pyproject.toml'
-
+    branches: [main]
+    paths: ['pyproject.toml']
+  pull_request:
+    branches: [main]
+    paths: ['pyproject.toml']
+    types: [closed]
 
 jobs:
 
   build-and-deploy:
-
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
+
     - name: omnicloud ci step
       uses: omnicloudworld/ci/python/poetry2pypi@v0.0.2
       with:
