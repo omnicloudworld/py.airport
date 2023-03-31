@@ -2,4 +2,4 @@
 extension-pkg-allow-list=pydantic
 
 [FORMAT]
-max-line-length=110
+max-line-length=120

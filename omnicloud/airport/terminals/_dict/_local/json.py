@@ -1,7 +1,7 @@
-import json as _json
-from ...tools.dict import enrich_dict, type_converter
+import json
+from ....tools.dict import enrich_dict, type_converter
 
-from .terminal import _TerminalDict
+from .. import Terminal
 
 __all__ = ['LocalJSON']
 
@@ -40,7 +40,7 @@ def _get_json_kwargs(options: dict) -> dict:
     return json_kwargs
 
 
-class LocalJSON(_TerminalDict.Gate):
+class LocalJSON(Terminal.Gate):
 
     @classmethod
     def arriving(cls, place: str, **options):
@@ -49,7 +49,7 @@ class LocalJSON(_TerminalDict.Gate):
         json_kwargs = _get_json_kwargs(options)
 
         with open(place, **open_kwargs) as json_file:  # pylint: disable=unspecified-encoding
-            return _json.load(json_file, **json_kwargs)
+            return json.load(json_file, **json_kwargs)
 
     @classmethod
     def departure(cls, parcel, place: str, **options):
@@ -58,4 +58,4 @@ class LocalJSON(_TerminalDict.Gate):
         json_kwargs = _get_json_kwargs(options)
 
         with open(place, **open_kwargs) as json_file:  # pylint: disable=unspecified-encoding
-            _json.dump(parcel, json_file, **json_kwargs)
+            json.dump(parcel, json_file, **json_kwargs)

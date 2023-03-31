@@ -7,8 +7,9 @@ from base64 import b64decode as b64d
 from os import environ as env
 from os import path
 from typing import Any
-from ..tools.pkg import abstract_checker
 from warnings import warn
+
+from ..tools.pkg import abstract_checker
 
 __all__ = ['Gate', 'Building']
 
@@ -69,10 +70,12 @@ class Building(ABC):
         gate_name, place, options = params[0], params[1], None
 
         # Find the door class based on door_name
+        parent_of_terminal = cls.__module__.rsplit('.', 1)[-1]
         gate: Gate | None = None
-        for sub_cls in cls.Gate.__subclasses__():
-            if sub_cls.__qualname__ == gate_name:
-                gate = sub_cls  # type: ignore
+        for gate_cls in Gate.__subclasses__():
+            parent_of_gate = gate_cls.__module__.rsplit('.', 1)[0].replace('omnicloud.airport.terminals.', '')
+            if gate_cls.__qualname__ == gate_name and parent_of_gate.startswith(parent_of_terminal):
+                gate = gate_cls  # type: ignore
                 break
 
         if not gate:

@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "omnicloud-airport"
-version = "0.0.1-pre02"
+version = "0.0.1-pre03"
 description = "platform for interacting with omnicloud"
 keywords = ["omnicloud", "supercloud", "multicloud", "cloud computing", "migration"]
 authors = ["Iurii Tarasenko <iurii@omnicloud.world>"]
@@ -33,6 +33,7 @@ flake8 = "^6.0.0"
 pyyaml = "^6.0"
 pyyaml-env-tag = "^0.1"
 omnicloud-tools = "^0.0.1rc1"
+autopep8 = "^2.0.2"
 
 
 [tool.poetry.group.mkdocs.dependencies]

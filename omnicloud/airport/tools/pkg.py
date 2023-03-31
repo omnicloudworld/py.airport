@@ -1,83 +1,57 @@
 import importlib as _importlib
-import pkgutil as _pkgutil
-from os import path as _path
 from os import environ as _env
-from warnings import warn as _warn
+from os import path as _path
+from os import scandir as _scandir
+from sys import modules as _modules
 
 
 __all__ = [
-    'import_all_modules',
     'abstract_checker',
-    'import_subpackages_attributes'
+    'import_gates'
 ]
-
-
-def import_all_modules(package_name: str, package_path: str):
-
-    for module_info in _pkgutil.iter_modules([package_path]):
-
-        module_name = f"{package_name}.{module_info.name}"
-        _importlib.import_module(module_name)
-        module_path = _path.join(package_path, module_info.name)
-
-        if _path.isdir(module_path):
-            continue
 
 
 def abstract_checker(cls, attr_name: str) -> None:
     attr = getattr(cls, attr_name)
     if hasattr(attr, '__isabstractmethod__') and attr.__isabstractmethod__:
         raise NotImplementedError(
-            f'The attribute "{cls.__name__}.{attr_name}" is required. Please read documentation of ZZZ!!'
+            f'The attribute "{cls.__name__}.{attr_name}" is required. Please read documentation of ...!!'
         )
 
 
-def import_subpackages_attributes(package_name: str, inherited: type, prefix: str):
-    """
-    Find and import {prefix}<Name> attributes from subpackages starting with "_" in the current package.
+def import_gates(file, name, parent: bool = True):
 
-    Returns:
-        list: a list of tuples (terminal_name, terminal_object) for each {prefix}<Name> attribute found.
+    start_dir = _path.dirname(file) if parent else file
 
-    Warnings:
-        UserWarning: if there is not exactly one {prefix}<Name> attribute in any subpackage.
-    """
+    with _scandir(start_dir) as folder_cont:
+        for entry in folder_cont:
 
-    package = _importlib.import_module(package_name)
-    terminals = []
-    names_list = []
+            if entry.is_dir() and entry.name.startswith('_') and _path.isfile(_path.join(entry.path, '__init__.py')):
 
-    def looking_for_subpackages(package_path, package_name):
+                subpackage_name = f"{name}.{entry.name}"
+                subpackage_path = _path.join(entry.path, '__init__.py')
+                spec = _importlib.util.spec_from_file_location(subpackage_name, subpackage_path)  # type: ignore
+                subpackage = _importlib.util.module_from_spec(spec)  # type: ignore
 
-        for _, name, is_pkg in _pkgutil.walk_packages(package_path, f"{package_name}."):
+                _modules[subpackage_name] = subpackage  # Add the subpackage to sys.modules
+                setattr(_modules[name], entry.name, subpackage)  # Add the subpackage to the main module's namespace
 
-            if is_pkg and name.startswith(f"{package_name}._"):
-                pkg = _importlib.import_module(name)
+                subpackage.__package__ = subpackage_name
+                spec.loader.exec_module(subpackage)
 
-                terminal_names = [
-                    attr_name[len(f'{prefix}'):]
-                    for attr_name in dir(pkg)
-                    if attr_name.startswith(f'{prefix}')
-                ]
+    if _env.get('OMNICLOUD_AIRPORT_DEVPATH', '') != '' \
+            and _path.isdir(_env['OMNICLOUD_AIRPORT_DEVPATH']) \
+            and parent \
+            and not _env['OMNICLOUD_AIRPORT_DEVPATH'] in file:
 
-                if len(terminal_names) != 1:
-                    _warn(f"Expected 1 {prefix}* attribute in {name}, found {len(terminal_names)}")
-                    continue
-
-                terminal_name = terminal_names[0]
-                terminal = getattr(pkg, f'{prefix}{terminal_name}')
-
-                if not issubclass(terminal, inherited):
-                    raise TypeError(f"Expected {inherited.__name__} subclass in {name}.")
-
-                terminals.append((terminal_name, terminal))
-                names_list.append(terminal_name)
-
-                if len(terminals) > len(set(names_list)):
-                    raise RuntimeError(f"Duplicate terminal name {terminal_name} in {name}")
-
-    looking_for_subpackages(package.__path__, package_name)
-    if 'OMNICLOUD_AIRPORT_DEVPATH' in _env and _env['OMNICLOUD_AIRPORT_DEVPATH'] != '':
-        looking_for_subpackages([_env['OMNICLOUD_AIRPORT_DEVPATH']], package_name)
-
-    return terminals
+        workdir = _path.join(
+            _env['OMNICLOUD_AIRPORT_DEVPATH'],
+            'omnicloud/airport/terminals',
+            start_dir.rsplit('/', 1)[-1]
+        )
+        if _path.isdir(workdir):
+            with _scandir(workdir) as entries:
+                for entry in entries:
+                    if entry.is_dir() and entry.name.startswith('_') \
+                            and _path.isfile(_path.join(entry.path, '__init__.py')):
+                        import_gates(workdir, name, False)

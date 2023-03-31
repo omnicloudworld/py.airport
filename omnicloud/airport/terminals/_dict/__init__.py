@@ -1,12 +1,15 @@
-
-from ...abc import Gate as _Gate
-from ...tools.pkg import import_subpackages_attributes as _import_gates
-from .local import LocalJSON
-
-from .terminal import _TerminalDict
+from ...abc import Building
+from ...tools.pkg import import_gates
 
 
-# Import all terminals with aliases without the _Terminal prefix
-for _gate_name, _gate_obj in _import_gates(__name__, _Gate, '_Gate'):
+class Terminal(dict, Building):
+    '''
+    It as an omnicloud.airport's Terminal for a main python object "dict".
+    '''
 
-    globals()[_gate_name] = _gate_obj
+    @property
+    def parcel(self):
+        return self
+
+
+import_gates(__file__, __name__)
