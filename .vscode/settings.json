@@ -30,6 +30,7 @@
         "asgi",
         "asgiref",
         "Asyncio",
+        "camelcase",
         "closefd",
         "Comfortaa",
         "crossorigin",
@@ -54,12 +55,14 @@
         "pylint",
         "pyyaml",
         "qualname",
+        "scandir",
         "setuptools",
         "skipkeys",
         "SPACELAB",
         "subpackages",
         "supercloud",
         "wght",
+        "workdir",
         "wsgi"
     ],
     "cSpell.ignorePaths": [
