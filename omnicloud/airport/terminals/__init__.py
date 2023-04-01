@@ -9,6 +9,7 @@ from ..abc import Building as _Building
 from ..tools.type import underscore_to_camelcase as _2camelcase
 
 infobox = {}
+__all__ = ['infobox']
 
 
 def _import_terminals(start_dir, package_name):
