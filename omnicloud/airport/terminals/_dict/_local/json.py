@@ -1,7 +1,7 @@
 import json
 from os import path, makedirs
 from ....tools.files import kw4open
-from ....tools.type import kw4json
+from ....tools.json import kw4json
 
 from .. import Terminal
 
