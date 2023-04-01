@@ -35,6 +35,7 @@ def _import_terminals(start_dir, package_name):
                     raise RuntimeError(f"Terminal not found in {subpackage_name}.")
 
                 terminal_name = _2camelcase(entry.name)
+                globals()['__all__'].append(terminal_name)
 
                 setattr(_modules[__name__], terminal_name, terminal)
                 infobox[terminal_name] = {'gates': {}}
