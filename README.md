@@ -85,6 +85,12 @@ Both command in the tutorial above save a data to file "/tmp/a/file.json"
 For interaction with different storage (cloud provider) you have to change waybill in your config
 or environment variable:
 
+```bash
+pip3 install omnicloud-airport-gcp
+```
+
+then
+
 ```py
 Dict(test_dict).departure('GStorageJSON::gs://bucket::ensure_ascii=False||key_file=...', 'a/file.json')
 ```

@@ -2,10 +2,10 @@
 
 from .type import convert_to_bool as _convert_to_bool
 
-__all__ = ['enrich_dict', 'type_converter']
+__all__ = ['enrich', 'item_converter']
 
 
-def enrich_dict(target: dict, src: dict, key: str, default=None) -> dict:
+def enrich(target: dict, src: dict, key: str, default=None) -> dict:
     '''Enriches a target dictionary with a source dictionary.
 
     Args:
@@ -27,7 +27,7 @@ def enrich_dict(target: dict, src: dict, key: str, default=None) -> dict:
     return target
 
 
-def type_converter(src: dict, key: str, data_type: type, obj: str) -> dict:
+def item_converter(src: dict, key: str, data_type: type, obj: str) -> dict:
     '''Converts the value of a given key in a dictionary to a given type.
 
     Args:
