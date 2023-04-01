@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "omnicloud-airport"
-version = "0.0.1-pre04"
+version = "0.0.1-pre05"
 description = "platform for interacting with omnicloud"
 keywords = ["omnicloud", "supercloud", "multicloud", "cloud computing", "migration"]
 authors = ["Iurii Tarasenko <iurii@omnicloud.world>"]

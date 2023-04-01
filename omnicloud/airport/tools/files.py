@@ -1,5 +1,5 @@
-from ...tools.dict import enrich as _enrich
-from ...tools.dict import item_converter as _converter
+from .dict import enrich as _enrich
+from .dict import item_converter as _converter
 
 __all__ = [
     'kw4open'
