@@ -8,7 +8,7 @@ from sys import modules as _modules
 from ..abc import Building as _Building
 from ..tools.type import underscore_to_camelcase as _2camelcase
 
-infobox = {}
+infobox = {}  # It is an idea to have a global infobox (map) for all terminals
 __all__ = ['infobox']
 
 
